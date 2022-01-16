@@ -1,12 +1,13 @@
 const express = require('express');
+const app = express();
 const line = require('@line/bot-sdk');
 const { append } = require('express/lib/response');
 
 const PORT = process.env.PORT || 3000;
 
 const config = {
-    channelSecret: process.env.CHANNEL_SECLET,
-    channelAccessToken: process.env.CHANNEL_ACCSESS_TOKEN
+    channelSecret: 'U58d9565fb4cfd70cdfdcc90d43d8fe95',
+    channelAccessToken: 'QebSKgAi8ISn6lyVjPTTScx+2IdzOu5MnySD2nLfZCzPhMPqRE9zQyRrgfuIrH/x4DeSv0wgzZwfyUo/YT0k+Q3drcKQst2ps/9QQ8QnwdSXTmMujY9vWIRguDlwNYG7k45fEuMta8PPWjAOguq4NQdB04t89/1O/w1cDnyilFU='
 };
 
 const lineClient = new line.Client(config);
