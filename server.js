@@ -7,7 +7,7 @@ const express = require("express")
 //署名検証
 const crypto = require('crypto');
 function validateSignature(signature, body) {
-    const LINE_CHANNEL_SECRET = process.env.LINE_SECRET
+    const LINE_CHANNEL_SECRET = process.env.CHANNEL_SECLET
     return signature == crypto.createHmac('sha256', LINE_CHANNEL_SECRET).update(Buffer.from(JSON.stringify(body))).digest('base64')
 }
 
