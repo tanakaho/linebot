@@ -26,7 +26,6 @@ app.use(express.urlencoded({
 app.get("/", (req, res) => {
     res.sendStatus(200)
 })
-console.log(req.body.events[0].type);
 app.post("/webhook", function(req, res) {
     res.send("HTTP POST request sent to the webhook URL!")
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
