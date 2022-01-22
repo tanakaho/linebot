@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 3000
 const TOKEN = process.env.CHANNEL_ACCESS_TOKEN
 
 app.use(express.json())
+console.log(express.json)
 app.use(express.urlencoded({
     extended: true
 }))
