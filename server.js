@@ -1,5 +1,16 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 const https = require("https")
 const express = require("express")
+
+//署名検証
+const crypto = require('crypto');
+function validateSignature(signature, body) {
+    const LINE_CHANNEL_SECRET = process.env.LINE_SECRET
+    return signature == crypto.createHmac('sha256', LINE_CHANNEL_SECRET).update(Buffer.from(JSON.stringify(body))).digest('base64')
+}
+
 const app = express()
 const PORT = process.env.PORT || 3000
 const TOKEN = process.env.CHANNEL_ACCESS_TOKEN
@@ -15,6 +26,7 @@ app.get("/", (req, res) => {
 
 app.post("/webhook", function(req, res) {
     res.send("HTTP POST request sent to the webhook URL!")
+    if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
     // ユーザーがボットにメッセージを送った場合、返信メッセージを送る
     if (req.body.events[0].type === "message") {
     // 文字列化したメッセージデータ
