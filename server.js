@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
 const line = require('@line/bot-sdk');
 const https = require("https")
 const express = require("express")
-const client = new line.Client(config);
+// const client = new line.Client(config);
 
 
 //署名検証
@@ -26,13 +26,12 @@ app.use(express.urlencoded({
 app.get("/", (req, res) => {
     res.sendStatus(200)
 })
-
+console.log(req.body.events[0].type);
 app.post("/webhook", function(req, res) {
     res.send("HTTP POST request sent to the webhook URL!")
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
     // ユーザーがボットにメッセージを送った場合、返信メッセージを送る
     if (req.body.events[0].type === "message") {
-        console.log(req.body.events[0].type);
     // 文字列化したメッセージデータ
         const dataString = JSON.stringify({
             replyToken: req.body.events[0].replyToken,
