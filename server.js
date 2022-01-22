@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
     res.sendStatus(200)
 })
 app.post("/webhook", function(req, res) {
-    res.send("POST https://api.line.me/v2/bot/message/reply")
+    res.send("HTTP POST request sent to the webhook URL!")
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
     // ユーザーがボットにメッセージを送った場合、返信メッセージを送る
     if (req.body.events[0].type === "message") {
