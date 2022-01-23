@@ -1,3 +1,6 @@
 node_modules/
 text.txt
 .env
+line-bot-sdk-nodejs
+ffmpeg-master-latest-win64-gpl-shared
+linebot-voice-aa179e0015d7.json
