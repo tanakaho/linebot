@@ -3,6 +3,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const https = require("https")
 const express = require("express")
+const line = require('@line/bot-sdk');
+
+// 署名検証
 const crypto = require('crypto')
 function validateSignature(signature, body) {
     const LINE_CHANNEL_SECRET = process.env.CHANNEL_SECLET
@@ -13,6 +16,12 @@ const app = express()
 const PORT = process.env.PORT || 3000
 const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN
 
+const config = {
+    channelSecret:process.env.CHANNEL_SECLET,
+    channelAccessToken:process.env.CHANNEL_ACCSESS_TOKEN
+};
+
+const lineClient = new line.Client(config);
 
 app.use(express.json())
 app.use(express.urlencoded({
@@ -26,8 +35,9 @@ app.get("/", (req, res) => {
 app.post("/webhook", function(req, res) {
     res.send("HTTP POST request sent to the webhook URL!")
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
-    if(req.body.events[0].type === "message") {
-        const dataString = JSON.stringify({
+    switch(req.body.events[0].type){
+        case "message":
+        var dataString = JSON.stringify({
             replyToken:req.body.events[0].replyToken,
             messages: [
                 {
@@ -41,12 +51,12 @@ app.post("/webhook", function(req, res) {
             ]
         })
 
-        const headers = {
+        var headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + TOKEN
         }
 
-        const webhookOptions = {
+        var webhookOptions = {
             "hostname": "api.line.me",
             "path": "/v2/bot/message/reply",
             "method": "POST",
@@ -54,7 +64,7 @@ app.post("/webhook", function(req, res) {
             "body": dataString
         }
 
-        const request = https.request(webhookOptions, (res) => {
+        var request = https.request(webhookOptions, (res) => {
             res.on("data", (d) => {
                 process.stdout.write(d)
             })
@@ -66,6 +76,47 @@ app.post("/webhook", function(req, res) {
 
         request.write(dataString)
         request.end()
+        break;
+        case "audio":
+            var dataString = JSON.stringify({
+                replyToken:req.body.events[0].replyToken,
+                messages: [
+                    {
+                        "type": "text",
+                        "text": "Hello, user"
+                    },
+                    {
+                        "type": "text",
+                        "text": "this is audio"
+                    }
+                ]
+            })
+            var headers = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + TOKEN
+            }
+    
+            var webhookOptions = {
+                "hostname": "api.line.me",
+                "path": "/v2/bot/message/reply",
+                "method": "POST",
+                "headers": headers,
+                "body": dataString
+            }
+    
+            var request = https.request(webhookOptions, (res) => {
+                res.on("data", (d) => {
+                    process.stdout.write(d)
+                })
+            })
+    
+            request.on("error", (err) => {
+                console.error(err)
+            })
+    
+            request.write(dataString)
+            request.end()
+            break;
     }
 })
 
