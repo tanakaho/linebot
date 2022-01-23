@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 app.post("/webhook", function(req, res) {
     res.send("HTTP POST request sent to the webhook URL!")
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
-    switch(req.body.events[0].messages.type){
+    switch(req.body.events[0].message.type){
         case "text":
         var dataString = JSON.stringify({
             replyToken:req.body.events[0].replyToken,
