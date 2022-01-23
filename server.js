@@ -2,8 +2,8 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 const line = require('@line/bot-sdk');
-const https = require("https")
-const express = require("express")
+const https = require('https')
+const express = require('express')
 // const client = new line.Client(config);
 
 
@@ -26,7 +26,7 @@ app.use(express.urlencoded({
 app.get("/", (req, res) => {
     res.sendStatus(200)
 })
-app.post("/webhook", function(req, res) {
+app.post('/webhook', function(req, res) {
     res.send("HTTP POST request sent to the webhook URL!")
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
     // ユーザーがボットにメッセージを送った場合、返信メッセージを送る
