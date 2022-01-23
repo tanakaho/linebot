@@ -1,61 +1,75 @@
-// if (process.env.NODE_ENV !== 'production') {
-//     require('dotenv').config()
-// };
-
-const line = require('@line/bot-sdk');
-const express = require('express');
-
-// 環境変数
-const config = {
-    channelAccessToken: process.env.CHANNEL_ACCSESS_TOKEN,
-    channelSecret: process.env.CHANNEL_SECLET,
-    };
-
-// LINEクライアントを生成
-const client = new line.Client(config);
-
-// const https = require('https')
-
-//署名検証
-const crypto = require('crypto');
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+const https = require("https")
+const express = require("express")
+const crypto = require('crypto')
 function validateSignature(signature, body) {
     const LINE_CHANNEL_SECRET = process.env.CHANNEL_SECLET
     return signature == crypto.createHmac('sha256', LINE_CHANNEL_SECRET).update(Buffer.from(JSON.stringify(body))).digest('base64')
 }
 
-// Expressアプリを生成
-const app = express();
+const app = express()
+const PORT = process.env.PORT || 3000
+const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN
 
-app.post('/callback', line.middleware(config), (req, res) => {
+
+app.use(express.json())
+app.use(express.urlencoded({
+    extended: true
+}))
+
+app.get("/", (req, res) => {
+    res.sendStatus(200)
+})
+
+app.post("/webhook", function(req, res) {
+    res.send("HTTP POST request sent to the webhook URL!")
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
-    const events = req.body.events;
-    Promise.all(events.map((event) => {
-        // イベント1件を処理する・エラー時も例外を伝播しないようにしておく
-        return handleEvent(event).catch(() => { return null; });
-    })
-        .then((result) => {
-            // 全てのイベントの処理が終わったら LINE API サーバには 200 を返す
-            res.status(200).json({}).end();
+    if(req.body.events[0].type === "message") {
+        const dataString = JSON.stringify({
+            replyToken:req.body.events[0].replyToken,
+            messages: [
+                {
+                    "type": "text",
+                    "text": "Hello, user"
+                },
+                {
+                    "type": "text",
+                    "text": "May I help you?"
+                }
+            ]
         })
-)});
 
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + TOKEN
+        }
 
-// イベントハンドラー
-function handleEvent(event){
-    if (event.type !== 'message' || event.messages.type !== 'text') {
-        // メッセージイベントではない場合、テキスト以外のメッセージの場合は何もしない
-        return Promise.resolve(null);
+        const webhookOptions = {
+            "hostname": "api.line.me",
+            "path": "/v2/bot/message/reply",
+            "method": "POST",
+            "headers": headers,
+            "body": dataString
+        }
+
+        const request = https.request(webhookOptions, (res) => {
+            res.on("data", (d) => {
+                process.stdout.write(d)
+            })
+        })
+
+        request.on("error", (err) => {
+            console.error(err)
+        })
+
+        request.write(dataString)
+        request.end()
     }
+})
 
-    // 返信用メッセージを作成
-    const echo = { type: 'text', text: event.messages.text };
+app.listen(PORT, () => {
+    console.log(`Example app listening at http://localhost:${PORT}`)
+})
 
-    // ReplyAPIを利用してリプライ
-    return client.replyMessage(event.replyToken, echo);
-}
-
-// サーバー起動
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`listening on ${port}`);
-});
