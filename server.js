@@ -82,7 +82,7 @@ app.post("/webhook", function(req, res) {
         break;
         
         case "audio":
-            var audioData = fetchAudioMessage(body.events[0].message.id
+            var audioData = fetchAudioMessage(events[0].message.id
                 ).then(function (audioData) {
                     convert(audioData)
                         .then(function (audioBytes) {
