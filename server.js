@@ -17,18 +17,18 @@ const client = new line.Client(config);
 // const https = require('https')
 
 //署名検証
-// const crypto = require('crypto');
-// const { param } = require('express/lib/request');
-// function validateSignature(signature, body) {
-//     const LINE_CHANNEL_SECRET = process.env.CHANNEL_SECLET
-//     return signature == crypto.createHmac('sha256', LINE_CHANNEL_SECRET).update(Buffer.from(JSON.stringify(body))).digest('base64')
-// }
+const crypto = require('crypto');
+const express = require('express/lib/request');
+function validateSignature(signature, body) {
+    const LINE_CHANNEL_SECRET = process.env.CHANNEL_SECLET
+    return signature == crypto.createHmac('sha256', LINE_CHANNEL_SECRET).update(Buffer.from(JSON.stringify(body))).digest('base64')
+}
 
 // Expressアプリを生成
 const app = express();
 
 app.post('/callback', line.middleware(config), (req, res) => {
-    // if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
+    if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
     const events = req.body.events;
     Promise.all(events.map((event) => {
         // イベント1件を処理する・エラー時も例外を伝播しないようにしておく
