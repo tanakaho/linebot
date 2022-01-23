@@ -131,7 +131,7 @@ app.post("/webhook", function(req, res) {
                 });
             }
             const speech = require('@google-cloud/speech');
-            const speechClient = new speech.speechClient();
+            const speechClient = new speech.SpeechClient();
 
             function describe(audioBytes) {
                 return new Promise((resolve, reject) => {
