@@ -27,7 +27,7 @@ function validateSignature(signature, body) {
 const app = express()
 
 app.post('/callback', line.middleware(config), (req, res) => {
-    if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
+    // if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
     Promise
         .all(req.body.events.map(handleEvent))
         .then((result) => res.json(result))
