@@ -35,91 +35,89 @@ app.get("/", (req, res) => {
 app.post("/webhook", function(req, res) {
     res.send("HTTP POST request sent to the webhook URL!")
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
-    switch(req.body.events[0].type){
-        case "message":
-            switch(req.body.events[1].type){
-                case "text":
-                    var dataString = JSON.stringify({
-                    replyToken:req.body.events[0].replyToken,
-                    messages: [
-                        {
-                            "type": "text",
-                            "text": "Hello, user"
-                        },
-                        {
-                            "type": "text",
-                            "text": "May I help you?"
-                        }
-                    ]
-                    })
-                    var headers = {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer " + TOKEN
-                    }
-                    var webhookOptions = {
-                        "hostname": "api.line.me",
-                        "path": "/v2/bot/message/reply",
-                        "method": "POST",
-                        "headers": headers,
-                        "body": dataString
-                    }
-                    var request = https.request(webhookOptions, (res) => {
-                        res.on("data", (d) => {
-                        process.stdout.write(d)
-                        })
-                    })
+    switch(req.body.events[0].messages.type){
+        case "text":
+        var dataString = JSON.stringify({
+            replyToken:req.body.events[0].replyToken,
+            messages: [
+                {
+                    "type": "text",
+                    "text": "Hello, user"
+                },
+                {
+                    "type": "text",
+                    "text": "May I help you?"
+                }
+            ]
+        })
 
-                    request.on("error", (err) => {
-                    console.error(err)
-                    })
+        var headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + TOKEN
+        }
 
-                    request.write(dataString)
-                    request.end()
-                    break;
+        var webhookOptions = {
+            "hostname": "api.line.me",
+            "path": "/v2/bot/message/reply",
+            "method": "POST",
+            "headers": headers,
+            "body": dataString
+        }
 
-                case "audio":
-                    var dataString = JSON.stringify({
-                        replyToken:req.body.events[0].replyToken,
-                        messages: [
-                            {
-                                "type": "text",
-                                "text": "Hello, user"
-                            },
-                            {
-                                "type": "text",
-                                "text": "this is audio"
-                            }
-                        ]
-                    })
-                    var headers = {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer " + TOKEN
+        var request = https.request(webhookOptions, (res) => {
+            res.on("data", (d) => {
+                process.stdout.write(d)
+            })
+        })
+
+        request.on("error", (err) => {
+            console.error(err)
+        })
+
+        request.write(dataString)
+        request.end()
+        break;
+        
+        case "audio":
+            var dataString = JSON.stringify({
+                replyToken:req.body.events[0].replyToken,
+                messages: [
+                    {
+                        "type": "text",
+                        "text": "Hello, user"
+                    },
+                    {
+                        "type": "text",
+                        "text": "this is audio"
                     }
-    
-                    var webhookOptions = {
-                        "hostname": "api.line.me",
-                        "path": "/v2/bot/message/reply",
-                        "method": "POST",
-                        "headers": headers,
-                        "body": dataString
-                    }
-    
-                    var request = https.request(webhookOptions, (res) => {
-                        res.on("data", (d) => {
-                            process.stdout.write(d)
-                        })
-                    })
-    
-                    request.on("error", (err) => {
-                        console.error(err)
-                    })
-    
-                    request.write(dataString)
-                    request.end()
-                    break;
+                ]
+            })
+            var headers = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + TOKEN
             }
-            default:
-                break;
+    
+            var webhookOptions = {
+                "hostname": "api.line.me",
+                "path": "/v2/bot/message/reply",
+                "method": "POST",
+                "headers": headers,
+                "body": dataString
+            }
+    
+            var request = https.request(webhookOptions, (res) => {
+                res.on("data", (d) => {
+                    process.stdout.write(d)
+                })
+            })
+    
+            request.on("error", (err) => {
+                console.error(err)
+            })
+    
+            request.write(dataString)
+            request.end()
+            break;
     }
 })
 
