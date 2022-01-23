@@ -100,7 +100,7 @@ app.post("/webhook", function(req, res) {
                         const content = [];
                         stream
                             .on('data', (chunk) => {
-                                content.push(new Buffer(chunk));
+                                content.push(new Buffer.from(chunk));
                             })
                             .on('error', (err) => {
                                 reject(err);
