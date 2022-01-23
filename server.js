@@ -143,9 +143,13 @@ app.post("/webhook", function(req, res) {
                         sampleRateHertz: 16000,
                         languageCode: 'ja-JP',
                     };
+                    const request = {
+                        audio: audio,
+                        config: config,
+                    };
 
                     speechClient
-                        .recognize(Request)
+                        .recognize(request)
                         .then(data => {
                             const response = data[0];
                             const transcription = response.results
