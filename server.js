@@ -82,86 +82,30 @@ app.post("/webhook", function(req, res) {
         break;
         
         case "audio":
-            var audioData = fetchAudioMessage(req.body.events[0].message.id
-                ).then(function (audioData) {
-                    convert(audioData)
-                        .then(function (audioBytes) {
-                            return describe(audioBytes);
-                        }).then(function (text) {
-                            lineClient.replyMessage(req.body.events[0].replyToken, {
-                                type: 'text',
-                                text:text
-                            });
-                        });
-                });
-            function fetchAudioMessage(messageId){
-                return new Promise((resolve, reject) => {
-                    lineClient.getMessageContent(messageId).then((stream) => {
-                        const content = [];
-                        stream
-                            .on('data', (chunk) => {
-                                content.push(new Buffer.from(chunk));
-                            })
-                            .on('error', (err) => {
-                                reject(err);
-                            })
-                            .on('end', function() {
-                                resolve(Buffer.concat(content));
-                            });
-                    });
-                });
+            var replyToken = req.body.events[0].replyToken;
+            var messageId = req.body.events[0].message.id;
+            // 音声取得
+            var headers = {
+                "Authorization": "Bearer " + TOKEN
             }
-            function convert(audioData) {
-                return new Promise((resolve, reject) => {
-                    const decoder = new Fdkaac({
-                        "output": "buffer",
-                        "bitrate": 192
-                    }).setBuffer(audioData);
-
-                    decoder.decode()
-                        .then(() => {
-                            //Encoding finished
-                            const buffer = decoder.getBuffer();
-                            const audioBytes = buffer.toString('base64');
-                            resolve(audioBytes);
-                        })
-                        .catch((error) => {
-                            console.log("decode error:", error);
-                        });
-                });
+            var webhookOptions = {
+                "hostname": "api-data.line.me",
+                "path": `/v2/bot/message/${messageId}/content`,
+                "method": "GET",
+                "headers": headers,
             }
-            const speech = require('@google-cloud/speech');
-            const speechClient = new speech.SpeechClient();
-
-            function describe(audioBytes) {
-                return new Promise((resolve, reject) => {
-                    const audio = {
-                        content: audioBytes,
-                    };
-                    const config = {
-                        encoding: 'LINEAR16',
-                        sampleRateHertz: 16000,
-                        languageCode: 'ja-JP',
-                    };
-                    const request = {
-                        audio: audio,
-                        config: config,
-                    };
-
-                    speechClient
-                        .recognize(request)
-                        .then(data => {
-                            const response = data[0];
-                            const transcription = response.results
-                            .map(result => result.alternatives[0].transcript)
-                            .join('\n');
-                            resolve(transcription);
-                        })
-                        .catch(err => {
-                            console.error('ERROR:',err);
-                        });
-                });
-            }
+            var request = https.request(webhookOptions, (res) => {
+                res.on("data", (d) => {
+                    process.stdout.write(d)
+                })
+            })
+            request.on("error", (err) => {
+                console.error(err)
+            })
+            request.end()
+            
+            // const speech = require('@google-cloud/speech');
+            // const speechClient = new speech.SpeechClient();
             break;
     }
 })
