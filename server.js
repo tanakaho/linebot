@@ -96,6 +96,8 @@ app.post("/webhook", function(req, res) {
             }
             var request = https.request(webhookOptions, (res) => {
                 res.on("data", (d) => {
+                    
+                    Buffer.from(d).toString('base64');
                     process.stdout.write(d)
                 })
             })
