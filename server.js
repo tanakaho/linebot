@@ -40,7 +40,6 @@ app.post("/webhook", function(req, res) {
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
     switch(req.body.events[0].message.type){
         case "text":
-            process.stdout.write(req.body.events[0].replyToken);
         var dataString = JSON.stringify({
             replyToken:req.body.events[0].replyToken,
             messages: [
@@ -100,7 +99,6 @@ app.post("/webhook", function(req, res) {
                     process.stdout.write(d)
                 })
             })
-            console.log(process.stdout.write(d));
             request.on("error", (err) => {
                 console.error(err)
             })
