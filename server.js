@@ -130,7 +130,7 @@ app.post("/webhook", function(req, res) {
                 audio: audio
             };
             const [operation] = speechClient.longRunningRecognize(request);
-            const [response] = await operation.promise();
+            const [response] = operation.promise();
             const transcription = response.results
                 .map(results => result.alternatives[0].transcript)
                 .join('\n');
