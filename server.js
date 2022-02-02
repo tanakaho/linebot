@@ -96,8 +96,8 @@ app.post("/webhook", function(req, res) {
             }
             var request = https.request(webhookOptions, (res) => {
                 res.on("data", (d) => {
-                    var test = Buffer.from(d,'base64').toString();
-                    process.stdout.write(test);
+                    var voice_data = Buffer.from(d,'base64').toString();
+                    process.stdout.write(voice_data);
                 })
             })
             request.on("error", (err) => {
@@ -105,8 +105,36 @@ app.post("/webhook", function(req, res) {
             })
             request.end()
             
-            // const speech = require('@google-cloud/speech');
-            // const speechClient = new speech.SpeechClient();
+            // Speech-to-Text API
+            // ライブラリ達
+            const speech = require('@google-cloud/speech');
+            const fs = request('fs');
+
+            const speechClient = new speech.SpeechClient();
+
+            const encoding = 'LINEAR16';
+            const sampleRateHertz = 16000;
+            const languageCode = 'ja-jp';
+            const filename = voice_data;
+
+            var config = {
+                encoding: encoding,
+                sampleRateHertz: sampleRateHertz,
+                languageCode: languageCode
+            };
+            var audio = {
+                content: fs.readFileSync(filename).toString('base64'),
+            };
+            var request = {
+                config: config,
+                audio: audio
+            };
+            const [operation] = await speechClient.longRunningRecognize(request);
+            const [response] = await operation.promise();
+            const transcription = response.results
+                .map(results => result.alternatives[0].transcript)
+                .join('\n');
+            process.stdout.write(`Transcription: ${transcription}`);
             break;
     }
 })
