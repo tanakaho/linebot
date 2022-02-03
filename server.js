@@ -31,7 +31,7 @@ app.use(express.urlencoded({
     extended: true
 }))
 
-app.get("/", (req, res) => {
+exports.getdata = app.get("/", (req, res) => {
     res.sendStatus(200)
 })
 
@@ -82,6 +82,9 @@ app.post("/webhook", function(req, res) {
         break;
         
         case "audio":
+            var export_voiceText = require('./voice_text');
+            export_voiceText.voiceText(req);
+            
             var replyToken = req.body.events[0].replyToken;
             var messageId = req.body.events[0].message.id;
             // 音声取得
