@@ -96,8 +96,8 @@ app.post("/webhook", function(req, res) {
             }
             var request = https.request(webhookOptions, (res) => {
                 res.on("data", (d) => {
-                    var voice_data = Buffer.from(d,'base64').toString();
-                    // process.stdout.write(voice_data);
+                    // var voice_data = Buffer.from(d,'base64').toString();
+                    process.stdout.write(d);
                 })
             })
             request.on("error", (err) => {
@@ -115,7 +115,7 @@ app.post("/webhook", function(req, res) {
             const encoding = 'LINEAR16';
             const sampleRateHertz = 16000;
             const languageCode = 'ja-jp';
-            const filename = voice_data;
+            const filename = d;
 
             var config = {
                 encoding: encoding,
