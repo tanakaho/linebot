@@ -37,7 +37,7 @@ exports.voiceText = function(req,res){
         })
     })
     request.on("error", (err) => {
-        process.stdout.write(err)
+        process.stdout.write(`voiceTextErrer:${err}`)
     })
     request.end()
     // process.stdout.write(`messageID:${d}`);

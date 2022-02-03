@@ -16,10 +16,11 @@ exports.gcp_speechText = function(d){
         languageCode: languageCode,
         model: model,
     };
+    process.stdout(filename);
     const audio = {
         content: fs.readFileSync(filename).toString('base64'),
     };
-    process.stdout.write(audio);
+    // process.stdout.write(audio);
     const request = {
         config: config,
         audio: audio,
