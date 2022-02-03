@@ -18,5 +18,6 @@ const lineClient = new line.Client(config);
 
 exports.voiceText = function(req){
     var replyToken = req.body.events[0].replyToken;
-    process.stdout.write(replyToken);
+    var messageId = req.body.events[0].message.id;
+    process.stdout.write(`messageID:${messageId}`);
 }
