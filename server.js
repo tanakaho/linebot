@@ -97,7 +97,7 @@ app.post("/webhook", function(req, res) {
             var request = https.request(webhookOptions, (res) => {
                 res.on("data", (d) => {
                     var voice_data = Buffer.from(d,'base64').toString();
-                    process.stdout.write(voice_data);
+                    // process.stdout.write(voice_data);
                 })
             })
             request.on("error", (err) => {
