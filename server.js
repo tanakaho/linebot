@@ -83,31 +83,7 @@ app.post("/webhook", function(req, res) {
         
         case "audio":
             var export_voiceText = require('./voice_text');
-            export_voiceText.voiceText(req);
-            
-            var replyToken = req.body.events[0].replyToken;
-            var messageId = req.body.events[0].message.id;
-            // 音声取得
-            var headers = {
-                "Authorization": "Bearer " + TOKEN
-            }
-            var webhookOptions = {
-                "hostname": "api-data.line.me",
-                "path": `/v2/bot/message/${messageId}/content`,
-                "method": "GET",
-                "headers": headers,
-            }
-            var request = https.request(webhookOptions, (res) => {
-                res.on("data", (d) => {
-                    // var voice_data = Buffer.from(d,'base64').toString();
-                    process.stdout.write(d);
-                })
-            })
-            request.on("error", (err) => {
-                console.error(err)
-            })
-            request.end()
-            
+            export_voiceText.voiceText(req,res);
             // Speech-to-Text API
             // ライブラリ達
             const speech = require('@google-cloud/speech');
