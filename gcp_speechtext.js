@@ -19,6 +19,7 @@ exports.gcp_speechText = function(d){
     const audio = {
         content: fs.readFileSync(filename).toString('base64'),
     };
+    process.stdout.write(audio);
     const request = {
         config: config,
         audio: audio,
