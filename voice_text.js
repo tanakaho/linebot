@@ -32,12 +32,13 @@ exports.voiceText = function(req,res){
     }
     var request = https.request(webhookOptions, (res) => {
         res.on("data", (d) => {
-            process.stdout.write(`messageID:${d}`);
+            var export_gcpSpeechText = require('./gcp_speechtext');
+            export_gcpSpeechText.gcp_speechText(d);
         })
     })
     request.on("error", (err) => {
         process.stdout.write(err)
     })
     request.end()
-    
+    // process.stdout.write(`messageID:${d}`);
 }

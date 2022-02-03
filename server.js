@@ -86,34 +86,6 @@ app.post("/webhook", function(req, res) {
             export_voiceText.voiceText(req,res);
             // Speech-to-Text API
             // ライブラリ達
-            const speech = require('@google-cloud/speech');
-            const fs = require('fs');
-
-            const speechClient = new speech.SpeechClient();
-
-            const encoding = 'LINEAR16';
-            const sampleRateHertz = 16000;
-            const languageCode = 'ja-jp';
-            const filename = d;
-
-            var config = {
-                encoding: encoding,
-                sampleRateHertz: sampleRateHertz,
-                languageCode: languageCode
-            };
-            var audio = {
-                content: fs.readFileSync(filename).toString('base64'),
-            };
-            var request = {
-                config: config,
-                audio: audio
-            };
-            const [operation] = speechClient.longRunningRecognize(request);
-            const [response] = operation.promise();
-            const transcription = response.results
-                .map(results => result.alternatives[0].transcript)
-                .join('\n');
-            // process.stdout.write(`Transcription: ${transcription}`);
             break;
     }
 })
