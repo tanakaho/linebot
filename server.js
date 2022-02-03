@@ -108,7 +108,7 @@ app.post("/webhook", function(req, res) {
             // Speech-to-Text API
             // ライブラリ達
             const speech = require('@google-cloud/speech');
-            const fs = request('fs');
+            const fs = require('fs');
 
             const speechClient = new speech.SpeechClient();
 
