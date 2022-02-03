@@ -134,7 +134,7 @@ app.post("/webhook", function(req, res) {
             const transcription = response.results
                 .map(results => result.alternatives[0].transcript)
                 .join('\n');
-            process.stdout.write(`Transcription: ${transcription}`);
+            // process.stdout.write(`Transcription: ${transcription}`);
             break;
     }
 })
