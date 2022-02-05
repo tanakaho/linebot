@@ -5,20 +5,19 @@ const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN
 exports.make_richmenu = function(){
     const richmenu = {
         "size": {
-            "width": 1040,
-            "height": 1040
+            "width": 2500,
+            "height": 1686
         },
         "selected": true,
         "name": "ue",
         "chatBarText": "Tap to open",
         "areas": [
             {
-                // スタート
                 "bounds": {
                     "x": 0,
-                    "y": 521,
-                    "width": 520,
-                    "height": 520
+                    "y": 843,
+                    "width": 1250,
+                    "height": 843
                 },
                 "action": {
                     "type": "message",
@@ -26,12 +25,11 @@ exports.make_richmenu = function(){
                 }
             },
             {
-                // 合計金額
                 "bounds": {
-                    "x": 522,
-                    "y": 521,
-                    "width": 518,
-                    "height": 520
+                    "x": 1250,
+                    "y": 843,
+                    "width": 1250,
+                    "height": 843
                 },
                 "action": {
                     "type": "camera",
@@ -39,12 +37,11 @@ exports.make_richmenu = function(){
                 }
             },
             {
-                // 買い物リスト
                 "bounds": {
-                    "x": 522,
+                    "x": 1250,
                     "y": 0,
-                    "width": 518,
-                    "height": 520
+                    "width": 1250,
+                    "height": 843
                 },
                 "action": {
                     "type": "uri",
@@ -52,12 +49,11 @@ exports.make_richmenu = function(){
                 }
             },
             {
-                // リセット
                 "bounds": {
                     "x": 0,
                     "y": 0,
-                    "width": 520,
-                    "height": 520
+                    "width": 1250,
+                    "height": 843
                 },
                 "action": {
                     "type": "uri",
@@ -89,3 +85,4 @@ exports.make_richmenu = function(){
     })
     request.end()
 }
+
