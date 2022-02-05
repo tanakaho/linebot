@@ -5,23 +5,63 @@ const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN
 exports.make_richmenu = function(){
     const richmenu = {
         "size": {
-            "width": 2500,
-            "height": 1686
+            "width": 1040,
+            "height": 1040
         },
-        "selected": false,
-        "name": "stopwatch",
+        "selected": true,
+        "name": "ue",
         "chatBarText": "Tap to open",
         "areas": [
             {
+                // スタート
+                "bounds": {
+                    "x": 0,
+                    "y": 521,
+                    "width": 520,
+                    "height": 520
+                },
+                "action": {
+                    "type": "message",
+                    "text": "こんにちは"
+                }
+            },
+            {
+                // 合計金額
+                "bounds": {
+                    "x": 522,
+                    "y": 521,
+                    "width": 518,
+                    "height": 520
+                },
+                "action": {
+                    "type": "camera",
+                    "label":"Camera"
+                }
+            },
+            {
+                // 買い物リスト
+                "bounds": {
+                    "x": 522,
+                    "y": 0,
+                    "width": 518,
+                    "height": 520
+                },
+                "action": {
+                    "type": "uri",
+                    "uri": "https://developers.line.biz/"
+                }
+            },
+            {
+                // リセット
                 "bounds": {
                     "x": 0,
                     "y": 0,
-                    "width": 2500,
-                    "height": 1686
+                    "width": 520,
+                    "height": 520
                 },
                 "action": {
-                    "type": "postback",
-                    "data": "action=buy&itemid=123"
+                    "type": "uri",
+                    "uri": "https://www.hal.ac.jp/nagoya"
                 }
             }
         ]
@@ -36,6 +76,7 @@ exports.make_richmenu = function(){
         "path": `/v2/bot/richmenu`,
         "method": "POST",
         "headers": headers,
+        "body": richmenu
     }
 
     var request = https.request(webhookOptions, (res) => {
