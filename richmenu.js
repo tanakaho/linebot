@@ -20,7 +20,8 @@ exports.make_richmenu = function(){
                     "height": 1686
                 },
                 "action": {
-                    "type":"postback",
+                    "type": "postback",
+                    "data": "action=buy&itemid=123"
                 }
             }
         ]
