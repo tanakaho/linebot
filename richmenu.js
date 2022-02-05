@@ -13,6 +13,7 @@ exports.make_richmenu = function(){
         "chatBarText": "Tap to open",
         "areas": [
             {
+                // リセット
                 "bounds": {
                     "x": 0,
                     "y": 843,
@@ -25,9 +26,24 @@ exports.make_richmenu = function(){
                 }
             },
             {
+                // 買い物リスト
                 "bounds": {
                     "x": 1250,
                     "y": 843,
+                    "width": 1250,
+                    "height": 843
+                },
+                "action": {
+                    "type": "uri",
+                    "label":"買い物リスト",
+                    "uri": "https://line.me/R/nv/camera/"
+                }
+            },
+            {
+                // カメラ電卓
+                "bounds": {
+                    "x": 1250,
+                    "y": 0,
                     "width": 1250,
                     "height": 843
                 },
@@ -38,18 +54,7 @@ exports.make_richmenu = function(){
                 }
             },
             {
-                "bounds": {
-                    "x": 1250,
-                    "y": 0,
-                    "width": 1250,
-                    "height": 843
-                },
-                "action": {
-                    "type": "uri",
-                    "uri": "https://developers.line.biz/"
-                }
-            },
-            {
+                //スタート・ストップ
                 "bounds": {
                     "x": 0,
                     "y": 0,
