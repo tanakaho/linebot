@@ -32,8 +32,9 @@ exports.make_richmenu = function(){
                     "height": 843
                 },
                 "action": {
-                    "type": "camera",
-                    "label":"Camera"
+                    "type": "uri",
+                    "label":"カメラ電卓",
+                    "uri": "https://line.me/R/nv/camera/"
                 }
             },
             {
@@ -84,5 +85,7 @@ exports.make_richmenu = function(){
         process.stdout.write(`richmanuErrer:${err}`)
     })
     request.end()
+
+    return d;
 }
 
