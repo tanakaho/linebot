@@ -22,6 +22,7 @@ exports.make_richmenu = function(){
                 },
                 "action": {
                     "type": "message",
+                    "label": "",
                     "text": "こんにちは"
                 }
             },
@@ -62,8 +63,9 @@ exports.make_richmenu = function(){
                     "height": 843
                 },
                 "action": {
-                    "type": "uri",
-                    "uri": "https://www.hal.ac.jp/nagoya"
+                    "type": "message",
+                    "lebel": "ストップウォッチ",
+                    "text": "スタート"
                 }
             }
         ]

@@ -40,46 +40,9 @@ app.post("/webhook", function(req, res) {
     if (validateSignature(req.headers['x-line-signature'], req.body) !== true) return
     switch(req.body.events[0].message.type){
         case "text":
-        var dataString = JSON.stringify({
-            replyToken:req.body.events[0].replyToken,
-            messages: [
-                {
-                    "type": "text",
-                    "text": "Hello, user"
-                },
-                {
-                    "type": "text",
-                    "text": "May I help you?"
-                }
-            ]
-        })
-
-        var headers = {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + TOKEN
-        }
-
-        var webhookOptions = {
-            "hostname": "api.line.me",
-            "path": "/v2/bot/message/reply",
-            "method": "POST",
-            "headers": headers,
-            "body": dataString
-        }
-
-        var request = https.request(webhookOptions, (res) => {
-            res.on("data", (d) => {
-                process.stdout.write(d)
-            })
-        })
-
-        request.on("error", (err) => {
-            console.error(err)
-        })
-
-        request.write(dataString)
-        request.end()
-        break;
+            var export_textMessage = require('./text_message');
+            export_textMessage.textMessage(req,res);
+            break;
         
         case "audio":
             var export_voiceText = require('./voice_text');
