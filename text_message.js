@@ -15,7 +15,7 @@ exports.textMessage = function(req,res){
     switch(req.body.events[0].message.text){
         case "スタート":
             var startTime = req.body.events[0].timestamp;
-            startTime = dayjs(startTime);
+            startTime = dayjs(startTime).format('YYYY-MM-DD');
             
             var dataString = JSON.stringify({
                 replyToken:replyToken,

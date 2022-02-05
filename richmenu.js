@@ -92,7 +92,5 @@ exports.make_richmenu = function(){
         process.stdout.write(`richmanuErrer:${err}`)
     })
     request.end()
-
-    return d;
 }
 
