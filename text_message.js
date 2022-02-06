@@ -39,8 +39,8 @@ exports.textMessage = function(req,res){
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
-            process.stdin.write(`saveStartTime:${saveStartTime}`);
             if(saveStartTime != null){
+                process.stdin.write(`saveStartTime:${saveStartTime}`);
                 // スタートがある場合
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
@@ -65,6 +65,7 @@ exports.textMessage = function(req,res){
                     ]
                 })
             }else{
+                process.stdin.write(`saveStartTime:${saveStartTime}`);
                 // スタートがない場合
                 // リクエストボディ
                 var dataString = JSON.stringify({
