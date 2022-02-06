@@ -33,14 +33,7 @@ exports.textMessage = function(req,res){
                 ]
             })
             // ファイル書き込み
-            fs.writeFile("startTimeSave.txt", `${startTime}`,(err) => {
-                if(err){
-                    process.stdout.write("エラーが発生しました" + err);
-                    throw err
-                }else{
-                    process.stdout.write("正常に完了しました");
-                }
-            });
+            fs.writeFileSync("startTimeSave.txt", startTime);
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
