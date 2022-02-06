@@ -10,13 +10,19 @@ const config = {
     channelSecret:process.env.CHANNEL_SECLET,
     channelAccessToken:process.env.CHANNEL_ACCSESS_TOKEN
 };
+const filePath = "./save.txt";
+
 
 exports.textMessage = function(req,res){
     var replyToken = req.body.events[0].replyToken;
     if(req.body.events[0].message.text === "スタート"){
         var saveStartTime = req.body.events[0].timestamp;
         saveStartTime = dayjs(saveStartTime).format('M月D日HH時mm分');
-        fs.writeFileSync("./save.txt", "ok");
+        function write(filePath, saveStartTime){
+            fs.writeFileSync("./save.txt", "ok");
+            return true;
+        }
+        
     }
     switch(req.body.events[0].message.text){
         case "スタート":
