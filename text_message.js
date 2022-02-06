@@ -44,12 +44,11 @@ exports.textMessage = function(req,res){
                 // スタートがある場合
                 var samplestartTime = dayjs();
                 samplestartTime = dayjs(samplestartTime).subtract(10, 'second');
-                samplestartTime = dayjs(samplestartTime).format('M月D日HH時mm分ss秒');
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
-                endTime = dayjs(endTime).format('M月D日HH時mm分ss秒');
+                var endTime_f = dayjs(endTime).format('M月D日HH時mm分ss秒');
                 // スタートとストップの時間の差を割り出す
-                var diffTime = dayjs(endTime).diff(samplestartTime);
+                var diffTime = dayjs(endTime).diff(dayjs(samplestartTime));
                 // スタート初期化
                 // var saveStartTime = null;
                 // リクエストボディ
@@ -58,7 +57,7 @@ exports.textMessage = function(req,res){
                     messages:[
                         {
                             "type": "text",
-                            "text": `ストップしました\n${endTime}`
+                            "text": `ストップしました\n${endTime_f}`
                         },
                         {
                             "type": "text",
