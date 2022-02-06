@@ -31,10 +31,11 @@ exports.textMessage = function(req,res){
                     },
                     {
                         "type": "text",
-                        "text": `開始時間:2月5日11時30分`
+                        "text": `開始時間:${startTime}`
                     }
                 ]
             })
+            process.env.START_TIME = startTime;
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
@@ -50,6 +51,7 @@ exports.textMessage = function(req,res){
                 // スタートとストップの時間の差を割り出す
                 var diffTime = dayjs(sampleEndTime).diff(samplestartTime);
                 diffTime = dayjs(diffTime).format('M月D日HH時mm分');
+                process.stdout.write(diffTime);
                 // スタート初期化
                 // var saveStartTime = null;
                 // リクエストボディ
