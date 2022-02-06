@@ -2,6 +2,7 @@ const https = require("https")
 const express = require("express")
 const line = require('@line/bot-sdk');
 const dayjs = require('dayjs');
+const fs = require("fs");
 
 const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN
 
@@ -12,10 +13,6 @@ const config = {
 
 exports.textMessage = function(req,res){
     var replyToken = req.body.events[0].replyToken;
-    if(req.body.events[0].message.text == "スタート"){
-        var saveStartTime = req.body.events[0].timestamp;
-        saveStartTime = dayjs(saveStartTime).format('M月D日HH時mm分');
-    }
     process.stdout.write(`saveStartTime:${saveStartTime}`);
     switch(req.body.events[0].message.text){
         case "スタート":
@@ -36,6 +33,7 @@ exports.textMessage = function(req,res){
                     }
                 ]
             })
+            
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
