@@ -16,7 +16,7 @@ exports.textMessage = function(req,res){
     if(req.body.events[0].message.text === "スタート"){
         var saveStartTime = req.body.events[0].timestamp;
         saveStartTime = dayjs(saveStartTime).format('M月D日HH時mm分');
-        fs.writeFileSync("./Save.txt", "ok");
+        fs.writeFileSync("./save.txt", "ok");
     }
     switch(req.body.events[0].message.text){
         case "スタート":
