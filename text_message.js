@@ -22,7 +22,7 @@ exports.textMessage = function(req,res){
         case "スタート":
             // 日時取得とフォーマット
             var startTime = req.body.events[0].timestamp;
-            startTime = dayjs(startTime).format('M月D日HH時mm分');
+            startTime = dayjs(startTime).format('M月D日HH時mm分ss秒');
             // ファイル書き込み
             // fs.writeFileSync("startTimeSave.txt", startTime);
             // リクエストボディ
@@ -46,16 +46,15 @@ exports.textMessage = function(req,res){
             // スタートがあるかどうかのチェック
             // if(saveStartTime != null){
                 // スタートがある場合
-                var samplestartTime = dayjs('2022-02-05-11-30');
-                samplestartTime = dayjs(samplestartTime).format('M月D日HH時mm分');
-                var sampleEndTime = dayjs('2022-02-05-16-37');
-                sampleEndTime = dayjs(sampleEndTime).format('M月D日HH時mm分');
+                var samplestartTime = dayjs();
+                samplestartTime = dayjs(samplestartTime).subtract(10, 'second');
+                samplestartTime = dayjs(samplestartTime).format('M月D日HH時mm分ss秒');
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
                 endTime = dayjs(endTime).format('M月D日HH時mm分');
                 // スタートとストップの時間の差を割り出す
-                var diffTime = dayjs(sampleEndTime).diff(samplestartTime);
-                diffTime = dayjs(diffTime).format('M月D日HH時mm分');
+                var diffTime = dayjs(endTime).diff(samplestartTime);
+                diffTime = dayjs(diffTime).format('M月D日HH時mm分ss秒');
                 process.stdout.write(diffTime);
                 // スタート初期化
                 // var saveStartTime = null;
