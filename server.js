@@ -47,8 +47,6 @@ app.post("/webhook", function(req, res) {
         case "audio":
             var export_voiceText = require('./voice_text');
             export_voiceText.voiceText(req,res);
-            // Speech-to-Text API
-            // ライブラリ達
             break;
     }
 })
