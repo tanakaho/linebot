@@ -16,6 +16,7 @@ exports.textMessage = function(req,res){
         var saveStartTime = req.body.events[0].timestamp;
         saveStartTime = dayjs(saveStartTime).format('M月D日HH時mm分');
     }
+    process.stdout.write(`saveStartTime:${saveStartTime}`);
     switch(req.body.events[0].message.text){
         case "スタート":
             // 日時取得とフォーマット
@@ -38,6 +39,7 @@ exports.textMessage = function(req,res){
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
+            process.stdin.write(`saveStartTime:${saveStartTime}`);
             if(saveStartTime != null){
                 // スタートがある場合
                 // 日時取得とフォーマット
