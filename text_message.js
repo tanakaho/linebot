@@ -39,8 +39,8 @@ exports.textMessage = function(req,res){
                     }
                 ]
             })
-            var saveTime = dayjs(startTime).toString();
-            fs.writeFileSync('hoge.txt',saveTime);
+            // var saveTime = dayjs(startTime).toString();
+            // fs.writeFileSync('hoge.txt',saveTime);
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
@@ -65,7 +65,7 @@ exports.textMessage = function(req,res){
                     messages:[
                         {
                             "type": "text",
-                            "text": `ストップしました${sampleEndTime}`
+                            "text": `ストップしました${endTime}`
                         },
                         {
                             "type": "text",
