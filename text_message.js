@@ -31,12 +31,8 @@ exports.textMessage = function(req,res){
                 messages:[
                     {
                         "type": "text",
-                        "text": "スタート(サンプルデータ)"
+                        "text": `スタート(サンプルデータ)\n開始時間:${startTime}`
                     },
-                    {
-                        "type": "text",
-                        "text": `開始時間:${startTime}`
-                    }
                 ]
             })
             // var saveTime = dayjs(startTime).toString();
@@ -51,7 +47,7 @@ exports.textMessage = function(req,res){
                 samplestartTime = dayjs(samplestartTime).format('M月D日HH時mm分ss秒');
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
-                endTime = dayjs(endTime).format('M月D日HH時mm分');
+                endTime = dayjs(endTime).format('M月D日HH時mm分ss秒');
                 // スタートとストップの時間の差を割り出す
                 var diffTime = dayjs(endTime).diff(samplestartTime);
                 diffTime = dayjs(diffTime).format('M月D日HH時mm分ss秒');
@@ -64,7 +60,7 @@ exports.textMessage = function(req,res){
                     messages:[
                         {
                             "type": "text",
-                            "text": `ストップしました${endTime}`
+                            "text": `ストップしました\n${endTime}`
                         },
                         {
                             "type": "text",
