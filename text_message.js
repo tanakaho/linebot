@@ -42,7 +42,7 @@ exports.textMessage = function(req,res){
             // スタートがあるかどうかのチェック
             // if(saveStartTime != null){
                 // スタートがある場合
-                var samplestartTime = dayjs();
+                var samplestartTime = dayjs(new Date());
                 samplestartTime = dayjs(samplestartTime).subtract(10, 'second');
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
