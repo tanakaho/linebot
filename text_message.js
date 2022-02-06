@@ -33,7 +33,8 @@ exports.textMessage = function(req,res){
                     }
                 ]
             })
-            
+            // ファイル書き込み
+            fs.writeFileSync(startTimeSave.txt, startTime);
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
