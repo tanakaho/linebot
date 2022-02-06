@@ -13,25 +13,7 @@ const config = {
 exports.textMessage = function(req,res){
     var replyToken = req.body.events[0].replyToken;
     switch(req.body.events[0].message.text){
-        case "スタート":
-            // 日時取得とフォーマット
-            var startTime = req.body.events[0].timestamp;
-            startTime = dayjs(startTime).format('M月D日HH時mm分');
-            // リクエストボディ
-            var dataString = JSON.stringify({
-                replyToken:replyToken,
-                messages:[
-                    {
-                        "type": "text",
-                        "text": "スタート"
-                    },
-                    {
-                        "type": "text",
-                        "text": `開始時間${startTime}`
-                    }
-                ]
-            })
-            break;
+        
         case "ストップ":
             // スタートがあるかどうかのチェック
             if(startTime != null){
@@ -72,6 +54,24 @@ exports.textMessage = function(req,res){
                 })
             }
             break;
+        case "スタート":
+            // 日時取得とフォーマット
+            var startTime = req.body.events[0].timestamp;
+            startTime = dayjs(startTime).format('M月D日HH時mm分');
+            // リクエストボディ
+            var dataString = JSON.stringify({
+                replyToken:replyToken,
+                messages:[
+                    {
+                        "type": "text",
+                        "text": "スタート"
+                    },
+                    {
+                        "type": "text",
+                        "text": `開始時間${startTime}`
+                    }
+                ]
+            })
     }
     var headers = {
         "Content-Type": "application/json",
