@@ -50,8 +50,6 @@ exports.textMessage = function(req,res){
                 endTime = dayjs(endTime).format('M月D日HH時mm分ss秒');
                 // スタートとストップの時間の差を割り出す
                 var diffTime = dayjs(endTime).diff(samplestartTime);
-                diffTime = dayjs(diffTime).format('M月D日HH時mm分ss秒');
-                process.stdout.write(diffTime);
                 // スタート初期化
                 // var saveStartTime = null;
                 // リクエストボディ
