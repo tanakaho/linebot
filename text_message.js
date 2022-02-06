@@ -81,6 +81,65 @@ exports.textMessage = function(req,res){
                 // })
             // }
             break;
+            case "月曜日":
+                var dataString = JSON.stringify({
+                    replyToken:replyToken,
+                    messages:[
+                        {
+                            "type": "text",
+                            "text": `起きる時間：9時00分\n家出る時間：13時00分\n電車：13時43分5番線`
+                        },
+                        {
+                            "type": "text",
+                            "text": "やること\n・洗濯\n・IH31の授業\n・IPの授業"
+                        }
+                    ]
+                });
+            break;
+            case "火曜日":
+                var dataString = JSON.stringify({
+                    replyToken:replyToken,
+                    messages:[
+                        {
+                            "type": "text",
+                            "text": `起きる時間：9時00分\n家出る時間：11時30分\n電車：11時58分5番線`
+                        },
+                    ]
+                });
+            break;
+            case "水曜日":
+                var dataString = JSON.stringify({
+                    replyToken:replyToken,
+                    messages:[
+                        {
+                            "type": "text",
+                            "text": `起きる時間：8時00分\nバイトだよ`
+                        },
+                    ]
+                });
+            break;
+            case "木曜日":
+                var dataString = JSON.stringify({
+                    replyToken:replyToken,
+                    messages:[
+                        {
+                            "type": "text",
+                            "text": `起きる時間：9時00分\n家出る時間：16時30分\n電車：16時58分5番線\nバイトだよ`
+                        },
+                    ]
+                });
+            break;
+                case "金曜日":
+                var dataString = JSON.stringify({
+                    replyToken:replyToken,
+                    messages:[
+                        {
+                            "type": "text",
+                            "text": `起きる時間：6時30分\n家出る時間：8時00分\n電車：8時44分1番線`
+                        },
+                    ]
+                });
+            break;
     }
     var headers = {
         "Content-Type": "application/json",
