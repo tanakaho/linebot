@@ -39,6 +39,7 @@ exports.textMessage = function(req,res){
                     }
                 ]
             })
+            startTime = dayjs(startTime).toString();
             process.env.START_TIME = startTime;
             break;
         case "ストップ":
