@@ -42,14 +42,14 @@ exports.textMessage = function(req,res){
             // スタートがあるかどうかのチェック
             // if(saveStartTime != null){
                 // スタートがある場合
-                var samplestartTime = dayjs(new Date());
+                var samplestartTime = req.body.events[0].timestamp;
                 samplestartTime = dayjs(samplestartTime).subtract(10, 'second');
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
                 endTime = dayjs(endTime);
                 var endTime_f = dayjs(endTime).format('M月D日HH時mm分ss秒');
                 // スタートとストップの時間の差を割り出す
-                var diffTime = dayjs(dayjs(endTime)).diff(dayjs(samplestartTime), 'second');
+                var diffTime = dayjs(dayjs(endTime)).diff(dayjs(samplestartTime));
                 diffTime = dayjs(diffTime);
                 // スタート初期化
                 // var saveStartTime = null;
