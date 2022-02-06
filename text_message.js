@@ -40,7 +40,7 @@ exports.textMessage = function(req,res){
                 ]
             })
             var saveTime = dayjs(startTime).toString();
-            fs.watchFile('hoge.txt',saveTime);
+            fs.writeFileSync('hoge.txt',saveTime);
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
