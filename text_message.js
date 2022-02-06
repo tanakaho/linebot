@@ -42,13 +42,13 @@ exports.textMessage = function(req,res){
                 // スタートがある場合
                 var samplestartTime = dayjs('2022-02-05-11-30');
                 samplestartTime = dayjs(samplestartTime).format('M月D日HH時mm分');
-                var sampleEndTime = dayjs('2022-02-06-16-37');
+                var sampleEndTime = dayjs('2022-02-05-16-37');
                 sampleEndTime = dayjs(sampleEndTime).format('M月D日HH時mm分');
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
                 endTime = dayjs(endTime).format('M月D日HH時mm分');
                 // スタートとストップの時間の差を割り出す
-                var diffTime = sampleEndTime.diff(samplestartTime);
+                var diffTime = dayjs(sampleEndTime).diff(samplestartTime);
                 diffTime = dayjs(diffTime).format('M月D日HH時mm分');
                 // スタート初期化
                 // var saveStartTime = null;
