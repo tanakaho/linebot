@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
+
 const https = require("https")
 const express = require("express")
 const line = require('@line/bot-sdk');
