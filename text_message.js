@@ -15,38 +15,42 @@ exports.textMessage = function(req,res){
     switch(req.body.events[0].message.text){
         case "スタート":
             var startTime = req.body.events[0].timestamp;
-            startTime = dayjs(startTime).format('MM月DD日HH時mm分');
+            startTime = dayjs(startTime).format('M月D日HH時mm分');
             
             var dataString = JSON.stringify({
                 replyToken:replyToken,
                 messages:[
                     {
                         "type": "text",
+                        "text": "スタート"
+                    },
+                    {
+                        "type": "text",
                         "text": `${startTime}`
                     }
                 ]
             })
-            
-            var headers = {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + TOKEN
-            }
-            var webhookOptions = {
-                "hostname": "api.line.me",
-                "path": "/v2/bot/message/reply",
-                "method": "POST",
-                "headers": headers,
-                "body": dataString
-            }
-            var request = https.request(webhookOptions, (res) => {
-                res.on("data", (d) => {
-                    process.stdout.write(d)
-                })
-            })
-            request.on("error", (err) => {
-                console.error(err)
-            })
-            request.write(dataString)
-        request.end()
+            break;
     }
+    var headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + TOKEN
+    }
+    var webhookOptions = {
+        "hostname": "api.line.me",
+        "path": "/v2/bot/message/reply",
+        "method": "POST",
+        "headers": headers,
+        "body": dataString
+    }
+    var request = https.request(webhookOptions, (res) => {
+        res.on("data", (d) => {
+            process.stdout.write(d)
+        })
+    })
+    request.on("error", (err) => {
+        console.error(err)
+    })
+    request.write(dataString)
+    request.end()
 }
