@@ -12,20 +12,42 @@ const config = {
 
 exports.textMessage = function(req,res){
     var replyToken = req.body.events[0].replyToken;
+    if(req.body.events[0].message.text == "スタート"){
+        var saveStartTime = req.body.events[0].timestamp;
+        saveStartTime = dayjs(saveStartTime).format('M月D日HH時mm分');
+    }
     switch(req.body.events[0].message.text){
-        
+        case "スタート":
+            // 日時取得とフォーマット
+            var startTime = req.body.events[0].timestamp;
+            startTime = dayjs(startTime).format('M月D日HH時mm分');
+            // リクエストボディ
+            var dataString = JSON.stringify({
+                replyToken:replyToken,
+                messages:[
+                    {
+                        "type": "text",
+                        "text": "スタート"
+                    },
+                    {
+                        "type": "text",
+                        "text": `開始時間${startTime}`
+                    }
+                ]
+            })
+            break;
         case "ストップ":
             // スタートがあるかどうかのチェック
-            if(startTime != null){
+            if(saveStartTime != null){
                 // スタートがある場合
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
                 endTime = dayjs(endTime).format('M月D日HH時mm分');
                 // スタートとストップの時間の差を割り出す
-                var diffTime = endTime.diff(startTime);
+                var diffTime = endTime.diff(saveStartTime);
                 diffTime = dayjs(diffTime).format('M月D日HH時mm分');
                 // スタート初期化
-                var startTime = null;
+                var saveStartTime = null;
                 // リクエストボディ
                 var dataString = JSON.stringify({
                     replyToken:replyToken,
@@ -54,24 +76,6 @@ exports.textMessage = function(req,res){
                 })
             }
             break;
-        case "スタート":
-            // 日時取得とフォーマット
-            var startTime = req.body.events[0].timestamp;
-            startTime = dayjs(startTime).format('M月D日HH時mm分');
-            // リクエストボディ
-            var dataString = JSON.stringify({
-                replyToken:replyToken,
-                messages:[
-                    {
-                        "type": "text",
-                        "text": "スタート"
-                    },
-                    {
-                        "type": "text",
-                        "text": `開始時間${startTime}`
-                    }
-                ]
-            })
     }
     var headers = {
         "Content-Type": "application/json",
