@@ -69,15 +69,15 @@ exports.textMessage = function(req,res){
             // }else{
                 // スタートがない場合
                 // リクエストボディ
-                var dataString = JSON.stringify({
-                    replyToken:replyToken,
-                    messages:[
-                        {
-                            "type": "text",
-                            "text": "”スタート”が入力されていないようなので計測できませんでした"
-                        },
-                    ]
-                })
+                // var dataString = JSON.stringify({
+                //     replyToken:replyToken,
+                //     messages:[
+                //         {
+                //             "type": "text",
+                //             "text": "”スタート”が入力されていないようなので計測できませんでした"
+                //         },
+                //     ]
+                // })
             // }
             break;
     }
