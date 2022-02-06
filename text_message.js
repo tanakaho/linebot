@@ -63,7 +63,7 @@ exports.textMessage = function(req,res){
                         },
                         {
                             "type": "text",
-                            "text": `かかった時間は${diffTime}です`
+                            "text": `かかった時間は\n${diffTime}`
                         }
                     ]
                 })
