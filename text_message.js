@@ -10,20 +10,10 @@ const config = {
     channelSecret:process.env.CHANNEL_SECLET,
     channelAccessToken:process.env.CHANNEL_ACCSESS_TOKEN
 };
-const filePath = "./save.txt";
 
 
 exports.textMessage = function(req,res){
     var replyToken = req.body.events[0].replyToken;
-    if(req.body.events[0].message.text === "スタート"){
-        var saveStartTime = req.body.events[0].timestamp;
-        saveStartTime = dayjs(saveStartTime).format('M月D日HH時mm分');
-        function write(filePath, saveStartTime){
-            fs.writeFileSync("./save.txt", "ok");
-            return true;
-        }
-        
-    }
     switch(req.body.events[0].message.text){
         case "スタート":
             // 日時取得とフォーマット
@@ -37,35 +27,38 @@ exports.textMessage = function(req,res){
                 messages:[
                     {
                         "type": "text",
-                        "text": "スタート"
+                        "text": "スタート(サンプルデータ)"
                     },
                     {
                         "type": "text",
-                        "text": `開始時間${startTime}`
+                        "text": `開始時間:2月5日11時30分`
                     }
                 ]
             })
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
-            if(saveStartTime != null){
-                process.stdin.write(`saveStartTime:${saveStartTime}`);
+            // if(saveStartTime != null){
                 // スタートがある場合
+                var samplestartTime = dayjs.dayjs('2022-02-05-11-30');
+                samplestartTime = dayjs(samplestartTime).format('M月D日HH時mm分');
+                var sampleEndTime = dayjs.dayjs('2022-02-06-16-37');
+                sampleEndTime = dayjs(sampleEndTime).format('M月D日HH時mm分');
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
                 endTime = dayjs(endTime).format('M月D日HH時mm分');
                 // スタートとストップの時間の差を割り出す
-                var diffTime = endTime.diff(saveStartTime);
+                var diffTime = sampleEndTime.diff(samplestartTime);
                 diffTime = dayjs(diffTime).format('M月D日HH時mm分');
                 // スタート初期化
-                var saveStartTime = null;
+                // var saveStartTime = null;
                 // リクエストボディ
                 var dataString = JSON.stringify({
                     replyToken:replyToken,
                     messages:[
                         {
                             "type": "text",
-                            "text": "ストップしました"
+                            "text": `ストップしました${sampleEndTime}`
                         },
                         {
                             "type": "text",
@@ -73,7 +66,7 @@ exports.textMessage = function(req,res){
                         }
                     ]
                 })
-            }else{
+            // }else{
                 // スタートがない場合
                 // リクエストボディ
                 var dataString = JSON.stringify({
@@ -85,7 +78,7 @@ exports.textMessage = function(req,res){
                         },
                     ]
                 })
-            }
+            // }
             break;
     }
     var headers = {
