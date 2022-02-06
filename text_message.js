@@ -65,7 +65,6 @@ exports.textMessage = function(req,res){
                     ]
                 })
             }else{
-                process.stdin.write(`saveStartTime:${saveStartTime}`);
                 // スタートがない場合
                 // リクエストボディ
                 var dataString = JSON.stringify({
