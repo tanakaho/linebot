@@ -18,6 +18,8 @@ exports.textMessage = function(req,res){
             // 日時取得とフォーマット
             var startTime = req.body.events[0].timestamp;
             startTime = dayjs(startTime).format('M月D日HH時mm分');
+            // ファイル書き込み
+            fs.writeFileSync("startTimeSave.txt", startTime);
             // リクエストボディ
             var dataString = JSON.stringify({
                 replyToken:replyToken,
@@ -32,8 +34,7 @@ exports.textMessage = function(req,res){
                     }
                 ]
             })
-            // ファイル書き込み
-            fs.writeFileSync("startTimeSave.txt", startTime);
+            
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
