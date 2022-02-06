@@ -39,8 +39,8 @@ exports.textMessage = function(req,res){
                     }
                 ]
             })
-            startTime = dayjs(startTime).toString();
-            fs.watchFile('hoge.txt',startTime);
+            var saveTime = dayjs(startTime).toString();
+            fs.watchFile('hoge.txt',saveTime);
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
