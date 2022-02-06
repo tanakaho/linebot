@@ -40,9 +40,9 @@ exports.textMessage = function(req,res){
             // スタートがあるかどうかのチェック
             // if(saveStartTime != null){
                 // スタートがある場合
-                var samplestartTime = dayjs.dayjs('2022-02-05-11-30');
+                var samplestartTime = dayjs('2022-02-05-11-30');
                 samplestartTime = dayjs(samplestartTime).format('M月D日HH時mm分');
-                var sampleEndTime = dayjs.dayjs('2022-02-06-16-37');
+                var sampleEndTime = dayjs('2022-02-06-16-37');
                 sampleEndTime = dayjs(sampleEndTime).format('M月D日HH時mm分');
                 // 日時取得とフォーマット
                 var endTime = req.body.events[0].timestamp;
