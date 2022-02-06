@@ -40,8 +40,7 @@ exports.textMessage = function(req,res){
                 ]
             })
             startTime = dayjs(startTime).toString();
-            process.stdout.write(startTime);
-            process.env.START_TIME = startTime;
+            fs.watchFile('hoge.txt',startTime);
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
