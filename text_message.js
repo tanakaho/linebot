@@ -13,7 +13,6 @@ const config = {
 
 exports.textMessage = function(req,res){
     var replyToken = req.body.events[0].replyToken;
-    process.stdout.write(`saveStartTime:${saveStartTime}`);
     switch(req.body.events[0].message.text){
         case "スタート":
             // 日時取得とフォーマット
@@ -34,7 +33,14 @@ exports.textMessage = function(req,res){
                 ]
             })
             // ファイル書き込み
-            fs.writeFileSync("startTimeSave.txt", `${startTime}`);
+            fs.writeFile("startTimeSave.txt", `${startTime}`,(err) => {
+                if(err){
+                    process.stdout.write("エラーが発生しました" + err);
+                    throw err
+                }else{
+                    process.stdout.write("正常に完了しました");
+                }
+            });
             break;
         case "ストップ":
             // スタートがあるかどうかのチェック
