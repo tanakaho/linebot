@@ -15,18 +15,6 @@ function validateSignature(signature, body) {
     return signature == crypto.createHmac('sha256', LINE_CHANNEL_SECRET).update(Buffer.from(JSON.stringify(body))).digest('base64')
 }
 
-// データベース接続
-const { Client } = require('pg');
-
-    const db_client = new Client({
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-            rejectUnauthorized: false
-        }
-    });
-
-    db_client.connect();
-
 const app = express()
 const PORT = process.env.PORT || 3000
 const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN

@@ -7,7 +7,7 @@ const express = require("express")
 const line = require('@line/bot-sdk');
 const dayjs = require('dayjs');
 const fs = require('fs');
-const client = require('pg/lib/native/client');
+// const client = require('pg/lib/native/client');
 
 const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN
 
