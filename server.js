@@ -53,7 +53,7 @@ app.post("/webhook", function(req, res) {
     switch(req.body.events[0].message.type){
         case "text":
             var export_textMessage = require('./text_message');
-            export_textMessage.textMessage(req,res,db_client);
+            export_textMessage.textMessage(req,res);
             break;
         
         case "audio":

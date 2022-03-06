@@ -7,7 +7,7 @@ const express = require("express")
 const line = require('@line/bot-sdk');
 const dayjs = require('dayjs');
 const fs = require('fs');
-// const client = require('pg/lib/native/client');
+const client = require('pg/lib/native/client');
 
 const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN
 
@@ -16,8 +16,20 @@ const config = {
     channelAccessToken:process.env.CHANNEL_ACCSESS_TOKEN
 };
 
+// データベース接続
+const { Client } = require('pg');
 
-exports.textMessage = function(req,res,db_client){
+    const db_client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+
+    db_client.connect();
+
+
+exports.textMessage = function(req,res){
     var replyToken = req.body.events[0].replyToken;
     var text_message = req.body.events[0].message.text;
 
