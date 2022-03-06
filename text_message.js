@@ -7,6 +7,7 @@ const express = require("express")
 const line = require('@line/bot-sdk');
 const dayjs = require('dayjs');
 const fs = require('fs');
+const client = require('pg/lib/native/client');
 
 const TOKEN = process.env.CHANNEL_ACCSESS_TOKEN
 
@@ -16,150 +17,53 @@ const config = {
 };
 
 
-exports.textMessage = function(req,res){
+exports.textMessage = function(req,res,db_client){
     var replyToken = req.body.events[0].replyToken;
-    switch(req.body.events[0].message.text){
-        case "スタート":
-            // 日時取得とフォーマット
-            var startTime = req.body.events[0].timestamp;
-            startTime = dayjs(startTime).format('M月D日HH時mm分ss秒');
-            // ファイル書き込み
-            // fs.writeFileSync("startTimeSave.txt", startTime);
-            // リクエストボディ
+    var text_message = req.body.events[0].message.text;
+
+    db_client.query(`SELECT gtext_name FROM get_text_messages where gtext_name = ${ text_message };`, (err, res) => {
+        if (err) throw err;
+        for (let row of res.rows) {
+            console.log(JSON.stringify(row));
+            process.stdout.write(JSON.stringify(row));
+
+            var getMessage = JSON.stringify(row);
             var dataString = JSON.stringify({
                 replyToken:replyToken,
                 messages:[
                     {
                         "type": "text",
-                        "text": `スタート(サンプルデータ)\n開始時間:${startTime}`
-                    },
+                        "text":`${getMessage}`
+                    }
                 ]
-            })
-            // var saveTime = dayjs(startTime).toString();
-            // fs.writeFileSync('hoge.txt',saveTime);
-            break;
-        case "ストップ":
-            // スタートがあるかどうかのチェック
-            // if(saveStartTime != null){
-                // スタートがある場合
-                var samplestartTime = req.body.events[0].timestamp;
-                samplestartTime = dayjs(samplestartTime).subtract(10, 'second');
-                // 日時取得とフォーマット
-                var endTime = req.body.events[0].timestamp;
-                endTime = dayjs(endTime);
-                var endTime_f = dayjs(endTime).format('M月D日HH時mm分ss秒');
-                // スタートとストップの時間の差を割り出す
-                var diffTime = dayjs(dayjs(endTime)).diff(dayjs(samplestartTime));
-                diffTime = dayjs(diffTime).format('mm分ss秒');
-                // スタート初期化
-                // var saveStartTime = null;
-                // リクエストボディ
-                var dataString = JSON.stringify({
-                    replyToken:replyToken,
-                    messages:[
-                        {
-                            "type": "text",
-                            "text": `ストップしました\n${endTime_f}`
-                        },
-                        {
-                            "type": "text",
-                            "text": `かかった時間は\n${diffTime}`
-                        }
-                    ]
+            });
+
+            var headers = {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + TOKEN
+            }
+
+            var webhookOptions = {
+                "hostname": "api.line.me",
+                "path": "/v2/bot/message/reply",
+                "method": "POST",
+                "headers": headers,
+                "body": dataString
+            }
+
+            var request = https.request(webhookOptions, (res) => {
+                res.on("data", (d) => {
+                    process.stdout.write(d)
                 })
-            // }else{
-                // スタートがない場合
-                // リクエストボディ
-                // var dataString = JSON.stringify({
-                //     replyToken:replyToken,
-                //     messages:[
-                //         {
-                //             "type": "text",
-                //             "text": "”スタート”が入力されていないようなので計測できませんでした"
-                //         },
-                //     ]
-                // })
-            // }
-            break;
-            case "月曜日":
-                var dataString = JSON.stringify({
-                    replyToken:replyToken,
-                    messages:[
-                        {
-                            "type": "text",
-                            "text": `起きる時間：9時00分\n家出る時間：13時00分\n電車：13時43分5番線`
-                        },
-                        {
-                            "type": "text",
-                            "text": "やること\n・洗濯\n・IH31の授業\n・IPの授業"
-                        }
-                    ]
-                });
-            break;
-            case "火曜日":
-                var dataString = JSON.stringify({
-                    replyToken:replyToken,
-                    messages:[
-                        {
-                            "type": "text",
-                            "text": `起きる時間：9時00分\n家出る時間：11時30分\n電車：11時58分5番線`
-                        },
-                    ]
-                });
-            break;
-            case "水曜日":
-                var dataString = JSON.stringify({
-                    replyToken:replyToken,
-                    messages:[
-                        {
-                            "type": "text",
-                            "text": `起きる時間：8時00分\nバイトだよ`
-                        },
-                    ]
-                });
-            break;
-            case "木曜日":
-                var dataString = JSON.stringify({
-                    replyToken:replyToken,
-                    messages:[
-                        {
-                            "type": "text",
-                            "text": `起きる時間：9時00分\n家出る時間：16時30分\n電車：16時58分5番線\nバイトだよ`
-                        },
-                    ]
-                });
-            break;
-                case "金曜日":
-                var dataString = JSON.stringify({
-                    replyToken:replyToken,
-                    messages:[
-                        {
-                            "type": "text",
-                            "text": `起きる時間：6時30分\n家出る時間：8時00分\n電車：8時44分1番線`
-                        },
-                    ]
-                });
-            break;
+            })
+
+            request.on("error", (err) => {
+                console.error(err)
+            })
+            request.write(dataString)
+            request.end()
+
+        }
+        client.end();
+    });
     }
-    var headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + TOKEN
-    }
-    var webhookOptions = {
-        "hostname": "api.line.me",
-        "path": "/v2/bot/message/reply",
-        "method": "POST",
-        "headers": headers,
-        "body": dataString
-    }
-    var request = https.request(webhookOptions, (res) => {
-        res.on("data", (d) => {
-            process.stdout.write(d)
-        })
-    })
-    request.on("error", (err) => {
-        console.error(err)
-    })
-    request.write(dataString)
-    request.end()
-}

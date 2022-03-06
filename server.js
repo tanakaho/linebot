@@ -15,8 +15,17 @@ function validateSignature(signature, body) {
     return signature == crypto.createHmac('sha256', LINE_CHANNEL_SECRET).update(Buffer.from(JSON.stringify(body))).digest('base64')
 }
 
-var export_createDB = require('./db');
-export_createDB.createDB();
+// データベース接続
+const { Client } = require('pg');
+
+    const db_client = new Client({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
+    });
+
+    db_client.connect();
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -44,7 +53,7 @@ app.post("/webhook", function(req, res) {
     switch(req.body.events[0].message.type){
         case "text":
             var export_textMessage = require('./text_message');
-            export_textMessage.textMessage(req,res);
+            export_textMessage.textMessage(req,res,db_client);
             break;
         
         case "audio":
