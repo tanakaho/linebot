@@ -33,7 +33,7 @@ exports.textMessage = function(req,res){
     var replyToken = req.body.events[0].replyToken;
     var text_message = req.body.events[0].message.text;
 
-    db_client.query(`SELECT gtext_name FROM get_text_messages where gtext_name = "${ text_message }";`, (err, res) => {
+    db_client.query(`SELECT gtext_name FROM get_text_messages where gtext_name="${ text_message }";`, (err, res) => {
         if (err) throw err;
         for (let row of res.rows) {
             console.log(JSON.stringify(row));
