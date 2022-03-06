@@ -64,6 +64,6 @@ exports.textMessage = function(req,res,db_client){
             request.end()
 
         }
-        client.end();
+        db_client.end();
     });
     }
