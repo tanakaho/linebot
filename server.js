@@ -52,47 +52,49 @@ app.post("/webhook", function(req, res) {
     switch(req.body.events[0].message.type){
         case "text":
             var text_message = req.body.events[0].message.text;
-            db_client.query(
-                `SELECT post_text FROM get_text_messages where gtext_name = '${ text_message }';`,
-                (err, res) => {
-                    if (err) throw err;
-                    for (let row of res.rows) {
-                        var getMessage = JSON.stringify(row);
-                        process.stdout.write(getMessage);
-                        var dataString = JSON.stringify({
-                            replyToken:replyToken,
-                            messages:[
-                                {
-                                    "type": "text",
-                                    "text":`${getMessage}`
-                                }
-                            ]
-                        });
+            var export_textMessage = require('./text_message');
+            export_textMessage.textMessage(req,res);
+            // db_client.query(
+            //     `SELECT post_text FROM get_text_messages where gtext_name = '${ text_message }';`,
+            //     (err, res) => {
+            //         if (err) throw err;
+            //         for (let row of res.rows) {
+            //             var getMessage = JSON.stringify(row);
+            //             process.stdout.write(getMessage);
+            //             var dataString = JSON.stringify({
+            //                 replyToken:replyToken,
+            //                 messages:[
+            //                     {
+            //                         "type": "text",
+            //                         "text":`${getMessage}`
+            //                     }
+            //                 ]
+            //             });
                         
-                    }
-                        var headers = {
-                            "Content-Type": "application/json",
-                            "Authorization": "Bearer " + TOKEN
-                        }
-                        var webhookOptions = {
-                            "hostname": "api.line.me",
-                            "path": "/v2/bot/message/reply",
-                            "method": "POST",
-                            "headers": headers,
-                            "body": dataString
-                        }
-                        var request = https.request(webhookOptions, (res) => {
-                            res.on("data", (d) => {
-                                process.stdout.write(d)
-                            })
-                        })
-                        request.on("error", (err) => {
-                            console.error(err)
-                        })
-                        request.write(dataString)
-                        request.end()
-                    db_client.end();
-                });
+            //         }
+            //             var headers = {
+            //                 "Content-Type": "application/json",
+            //                 "Authorization": "Bearer " + TOKEN
+            //             }
+            //             var webhookOptions = {
+            //                 "hostname": "api.line.me",
+            //                 "path": "/v2/bot/message/reply",
+            //                 "method": "POST",
+            //                 "headers": headers,
+            //                 "body": dataString
+            //             }
+            //             var request = https.request(webhookOptions, (res) => {
+            //                 res.on("data", (d) => {
+            //                     process.stdout.write(d)
+            //                 })
+            //             })
+            //             request.on("error", (err) => {
+            //                 console.error(err)
+            //             })
+            //             request.write(dataString)
+            //             request.end()
+            //         db_client.end();
+            //     });
             }
     }
 )
