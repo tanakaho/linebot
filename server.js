@@ -53,10 +53,9 @@ app.post("/webhook", function(req, res) {
         case "text":
             var text_message = req.body.events[0].message.text;
             db_client.query(
-                `SELECT gtext_name FROM get_text_messages where gtext_name = '${ text_message }';`,
+                `SELECT post_text FROM get_text_messages where gtext_name = '${ text_message }';`,
                 (err, res) => {
                     if (err) throw err;
-
                     for (let row of res.rows) {
                         var getMessage = JSON.stringify(row);
                         var dataString = JSON.stringify({
