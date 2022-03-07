@@ -67,6 +67,9 @@ app.post("/webhook", function(req, res) {
                                 }
                             ]
                         });
+                        db_client.end();
+                    }
+                });
                         var headers = {
                             "Content-Type": "application/json",
                             "Authorization": "Bearer " + TOKEN
@@ -88,9 +91,7 @@ app.post("/webhook", function(req, res) {
                         })
                         request.write(dataString)
                         request.end()
-                    }
-                    db_client.end();
-                });
+                
             }
     }
 )
