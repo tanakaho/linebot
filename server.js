@@ -56,6 +56,7 @@ app.post("/webhook", function(req, res) {
                 `SELECT gtext_name FROM get_text_messages where gtext_name = '${ text_message }';`,
                 (err, res) => {
                     if (err) throw err;
+
                     for (let row of res.rows) {
                         var getMessage = JSON.stringify(row);
                         var dataString = JSON.stringify({
@@ -67,9 +68,8 @@ app.post("/webhook", function(req, res) {
                                 }
                             ]
                         });
-                        db_client.end();
+                        
                     }
-                });
                         var headers = {
                             "Content-Type": "application/json",
                             "Authorization": "Bearer " + TOKEN
@@ -91,7 +91,8 @@ app.post("/webhook", function(req, res) {
                         })
                         request.write(dataString)
                         request.end()
-                
+                    db_client.end();
+                });
             }
     }
 )
