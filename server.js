@@ -58,6 +58,7 @@ app.post("/webhook", function(req, res) {
                     if (err) throw err;
                     for (let row of res.rows) {
                         var getMessage = JSON.stringify(row);
+                        process.stdout.write(getMessage);
                         var dataString = JSON.stringify({
                             replyToken:replyToken,
                             messages:[
