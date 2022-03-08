@@ -140,6 +140,28 @@ exports.textMessage = function(req,res){
                     ]
                 });
             break;
+                case "病院":
+                var dataString = JSON.stringify({
+                    replyToken:replyToken,
+                    messages:[
+                        {
+                            "type": "text",
+                            "text": `持ち物：お薬手帳\n診察代：480円`
+                        },
+                    ]
+                });
+            break;
+                case "日用品":
+                var dataString = JSON.stringify({
+                    replyToken:replyToken,
+                    messages:[
+                        {
+                            "type": "text",
+                            "text": `起きる時間：6時30分\n家出る時間：8時00分\n電車：8時44分1番線`
+                        },
+                    ]
+                });
+            break;
     }
     var headers = {
         "Content-Type": "application/json",
