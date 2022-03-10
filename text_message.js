@@ -146,7 +146,7 @@ exports.textMessage = function(req,res){
                     messages:[
                         {
                             "type": "text",
-                            "text": `持ち物：お薬手帳\n診察代：480円`
+                            "text": `持ち物：お薬手帳\n診察代：480円\n薬代：4010円`
                         },
                     ]
                 });
@@ -157,11 +157,25 @@ exports.textMessage = function(req,res){
                     messages:[
                         {
                             "type": "text",
-                            "text": `起きる時間：6時30分\n家出る時間：8時00分\n電車：8時44分1番線`
+                            "text": `マスク：トライアルの小さめ50枚：約500円\n
+                                    洗剤：アクロン\n柔軟剤：レノアのバニラのやつ\n`
                         },
                     ]
                 });
             break;
+                default:
+                    var dataString = JSON.stringify({
+                        replyToken:replyToken,
+                        messages:[
+                            {
+                                "type": "text",
+                                "text": `その言葉はまだわからないよ\nこの言葉はわかるよ\n
+                                        月曜日~金曜日：起床時間、出発時間、電車の時間\n
+                                        病院：病院の持ち物とかかるお金\n
+                                        日用品：買うもの`
+                            },
+                        ]
+                    });
     }
     var headers = {
         "Content-Type": "application/json",
